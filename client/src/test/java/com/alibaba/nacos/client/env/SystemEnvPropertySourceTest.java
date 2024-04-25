@@ -16,28 +16,28 @@
 
 package com.alibaba.nacos.client.env;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Additional test cases for SystemEnvPropertySource.
  *
  * <p> Common cases see {@link NacosClientPropertiesTest}.</p>
  */
-public class SystemEnvPropertySourceTest {
+class SystemEnvPropertySourceTest {
     
     SystemEnvPropertySource systemEnvPropertySource;
     
     private Map<String, String> mockEnvMap;
     
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         systemEnvPropertySource = new SystemEnvPropertySource();
         mockEnvMap = new HashMap<>();
         Field envField = SystemEnvPropertySource.class.getDeclaredField("env");
@@ -50,42 +50,42 @@ public class SystemEnvPropertySourceTest {
     }
     
     @Test
-    public void testGetEnvForLowerCaseKey() {
+    void getEnvForLowerCaseKey() {
         assertEquals("value1", systemEnvPropertySource.getProperty("testcase1"));
     }
     
     @Test
-    public void testGetEnvForLowerCaseKeyWithDot() {
+    void getEnvForLowerCaseKeyWithDot() {
         assertEquals("value2", systemEnvPropertySource.getProperty("test.case.2"));
     }
     
     @Test
-    public void testGetEnvForLowerCaseKeyWithHyphen() {
+    void getEnvForLowerCaseKeyWithHyphen() {
         assertEquals("value2", systemEnvPropertySource.getProperty("test-case-2"));
     }
     
     @Test
-    public void testGetEnvForLowerCaseKeyWithHyphenAndDot() {
+    void getEnvForLowerCaseKeyWithHyphenAndDot() {
         assertEquals("value2", systemEnvPropertySource.getProperty("test.case-2"));
     }
     
     @Test
-    public void testGetEnvForUpperCaseKey() {
+    void getEnvForUpperCaseKey() {
         assertEquals("value3", systemEnvPropertySource.getProperty("TESTCASE3"));
     }
     
     @Test
-    public void testGetEnvForUpperCaseKeyWithDot() {
+    void getEnvForUpperCaseKeyWithDot() {
         assertEquals("value4", systemEnvPropertySource.getProperty("TEST.CASE.4"));
     }
     
     @Test
-    public void testGetEnvForUpperCaseKeyWithHyphen() {
+    void getEnvForUpperCaseKeyWithHyphen() {
         assertEquals("value4", systemEnvPropertySource.getProperty("TEST-CASE-4"));
     }
     
     @Test
-    public void testGetEnvForUpperCaseKeyWithHyphenAndDot() {
+    void getEnvForUpperCaseKeyWithHyphenAndDot() {
         assertEquals("value4", systemEnvPropertySource.getProperty("TEST_CASE.4"));
     }
 }
