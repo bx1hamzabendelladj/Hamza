@@ -17,6 +17,7 @@
 package com.alibaba.nacos.client.auth.ram.identify;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -29,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StsConfigTest {
     
-    @AfterEach
-    void after() {
+    private static void resetStsConfig() {
         StsConfig.getInstance().setRamRoleName(null);
         StsConfig.getInstance().setTimeToRefreshInMillisecond(3 * 60 * 1000);
         StsConfig.getInstance().setCacheSecurityCredentials(true);
@@ -41,6 +41,16 @@ class StsConfigTest {
         System.clearProperty(IdentifyConstants.SECURITY_PROPERTY);
         System.clearProperty(IdentifyConstants.SECURITY_URL_PROPERTY);
         System.clearProperty(IdentifyConstants.SECURITY_CACHE_PROPERTY);
+    }
+    
+    @BeforeEach
+    void before() {
+        resetStsConfig();
+    }
+    
+    @AfterEach
+    void after() {
+        resetStsConfig();
     }
     
     @Test

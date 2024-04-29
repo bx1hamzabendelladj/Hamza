@@ -49,21 +49,21 @@ class ConfigEncryptionFilterTest {
     @BeforeEach
     void setUp() throws Exception {
         configEncryptionFilter = new ConfigEncryptionFilter();
-        
-        Mockito.when(configRequest.getDataId()).thenReturn("cipher-aes-test");
-        Mockito.when(configRequest.getContent()).thenReturn("nacos");
-        
-        Mockito.when(configResponse.getDataId()).thenReturn("test-dataid");
-        Mockito.when(configResponse.getContent()).thenReturn("nacos");
-        Mockito.when(configResponse.getEncryptedDataKey()).thenReturn("1234567890");
     }
     
     @Test
     void doFilter() throws NacosException {
+        Mockito.when(configRequest.getDataId()).thenReturn("cipher-aes-test");
+        Mockito.when(configRequest.getContent()).thenReturn("nacos");
+        
         configEncryptionFilter.doFilter(configRequest, null, iConfigFilterChain);
         
         Mockito.verify(configRequest, Mockito.atLeast(1)).getDataId();
         Mockito.verify(configRequest, Mockito.atLeast(1)).getContent();
+        
+        Mockito.when(configResponse.getDataId()).thenReturn("test-dataid");
+        Mockito.when(configResponse.getContent()).thenReturn("nacos");
+        Mockito.when(configResponse.getEncryptedDataKey()).thenReturn("1234567890");
         
         configEncryptionFilter.doFilter(null, configResponse, iConfigFilterChain);
         
