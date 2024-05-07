@@ -17,17 +17,18 @@
 package com.alibaba.nacos.client.utils;
 
 import com.alibaba.nacos.api.PropertyKeyConst;
-import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.client.env.NacosClientProperties;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-public class ValidatorUtilsTest {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class ValidatorUtilsTest {
     
     @Test
-    public void testContextPathLegal() {
+    void contextPathLegal() {
         String contextPath1 = "/nacos";
         ValidatorUtils.checkContextPath(contextPath1);
         String contextPath2 = "nacos";
@@ -40,39 +41,45 @@ public class ValidatorUtilsTest {
         ValidatorUtils.checkContextPath(null);
     }
     
-    @Test(expected = IllegalArgumentException.class)
-    public void testContextPathIllegal1() {
-        String contextPath1 = "//nacos/";
-        ValidatorUtils.checkContextPath(contextPath1);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testContextPathIllegal2() {
-        String contextPath2 = "/nacos//";
-        ValidatorUtils.checkContextPath(contextPath2);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testContextPathIllegal3() {
-        String contextPath3 = "///";
-        ValidatorUtils.checkContextPath(contextPath3);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testContextPathIllegal4() {
-        String contextPath4 = "//";
-        ValidatorUtils.checkContextPath(contextPath4);
+    @Test
+    void contextPathIllegal1() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            String contextPath1 = "//nacos/";
+            ValidatorUtils.checkContextPath(contextPath1);
+        });
     }
     
     @Test
-    public void testCheckInitParam() {
-        try {
+    void contextPathIllegal2() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            String contextPath2 = "/nacos//";
+            ValidatorUtils.checkContextPath(contextPath2);
+        });
+    }
+    
+    @Test
+    void contextPathIllegal3() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            String contextPath3 = "///";
+            ValidatorUtils.checkContextPath(contextPath3);
+        });
+    }
+    
+    @Test
+    void contextPathIllegal4() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            String contextPath4 = "//";
+            ValidatorUtils.checkContextPath(contextPath4);
+        });
+    }
+    
+    @Test
+    void checkInitParam() {
+        Assertions.assertDoesNotThrow(() -> {
             Properties properties = new Properties();
             properties.setProperty(PropertyKeyConst.CONTEXT_PATH, "test");
             final NacosClientProperties nacosClientProperties = NacosClientProperties.PROTOTYPE.derive(properties);
             ValidatorUtils.checkInitParam(nacosClientProperties);
-        } catch (NacosException e) {
-            Assert.fail();
-        }
+        });
     }
 }
